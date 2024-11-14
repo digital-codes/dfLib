@@ -6,7 +6,7 @@ More capable libraries like DanfoJs and Data-Forge appear to be no longer mainta
 
 
 ## Use Cases
-Web apps needing some basic data conversion functionality, e.g. data dashboards.
+Web apps needing some basic data conversion/processing functionality, e.g. data dashboards.
 
 ## Functions
 
