@@ -1,0 +1,25 @@
+{
+  "name": "dflib",
+  "version": "1.0.0",
+  "description": "A simple TypeScript DataFrame library",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "clean": "rm -rf dist",
+    "start": "node dist/index.js"
+  },
+"jest": {
+  "preset": "ts-jest",
+  "testEnvironment": "node"
+},  
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3"
+  }
+}
