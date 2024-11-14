@@ -45,31 +45,45 @@ export class DataFrame {
    * @returns {Object} An object where the keys are column names and the values are the
    * inferred data types ('number', 'string', 'mixed', or `undefined`).
    */
-  private detectDtypes(): { [key: string]: string | undefined } {
+  private detectDtypes(column: string | null = null): { [key: string]: string | undefined } {
     const types: { [key: string]: string | undefined } = {};
 
     this.columns.forEach((col) => {
-      const colValues = this.data.map((row) => row[col]);
-
-      // Check for NaN values; if any found, set dtype to undefined
-      const hasNaN = colValues.some((value) => typeof value === 'number' && isNaN(value));
-      if (hasNaN) {
-        types[col] = undefined;
-      } else {
-        // Determine column type if there are no NaNs
-        const nonNullValues = colValues.filter((value) => value !== null && value !== undefined);
-        const inferredType = nonNullValues.every((value) => typeof value === 'number')
-          ? 'number'
-          : nonNullValues.every((value) => typeof value === 'string')
-            ? 'string'
-            : 'mixed';
-
-        types[col] = inferredType;
-      }
+      types[col] = this.detectDtype(col);
     });
 
     return types;
   }
+
+  private detectDtype(column: string): string | undefined {
+
+    if (!this.columns.includes(column)) {
+      throw new Error(`Column "${column}" does not exist in the DataFrame`);
+    }
+
+    let type: string | undefined = undefined;
+
+    const colValues = this.data.map((row) => row[column]);
+
+    // Check for NaN values; if any found, set dtype to undefined
+    const hasNaN = colValues.some((value) => typeof value === 'number' && isNaN(value));
+    if (hasNaN) {
+      type = undefined;
+    } else {
+      // Determine column type if there are no NaNs
+      const nonNullValues = colValues.filter((value) => value !== null && value !== undefined);
+      const inferredType = nonNullValues.every((value) => typeof value === 'number')
+        ? 'number'
+        : nonNullValues.every((value) => typeof value === 'string')
+          ? 'string'
+          : 'mixed';
+
+      type = inferredType;
+    }
+
+    return type;
+  }
+
 
   // Accessor method to retrieve dtypes
   getDtypes(): { [key: string]: string | undefined } {
@@ -114,6 +128,44 @@ export class DataFrame {
     return this.columns;
   }
 
+  // Method to get unique values from a specified column
+  unique(column: string): any[] {
+    if (!this.columns.includes(column)) {
+      throw new Error(`Column "${column}" does not exist in the DataFrame`);
+    }
+
+    const values = this.data.map((row) => row[column]);
+    return Array.from(new Set(values));
+  }
+
+
+  // Method to add a new column to the DataFrame
+  addColumn(columnName: string, values: any[] | any): void {
+    if (this.columns.includes(columnName)) {
+      throw new Error(`Column "${columnName}" already exists in the DataFrame`);
+    }
+
+    // Add the new column to columns array
+    this.columns.push(columnName);
+
+    // Determine if a single value or array of values is provided
+    if (Array.isArray(values)) {
+      if (values.length !== this.data.length) {
+        this.columns.pop(); // remove new column name
+        throw new Error(`Length of values array (${values.length}) does not match the number of rows (${this.data.length})`);
+      }
+      // Add each value in the array to the corresponding row
+      this.data = this.data.map((row, i) => ({ ...row, [columnName]: values[i] }));
+    } else {
+      // Single default value provided, so add it to all rows
+      this.data = this.data.map((row) => ({ ...row, [columnName]: values }));
+    }
+    // Update the dtype for the new column
+    this.dtypes[columnName] = this.detectDtype(columnName)
+  }
+
+
+
   toJSON(records: boolean = true): Row[] | { [key: string]: any[] } {
     if (records) {
       // Default row-oriented export (array of row objects)
@@ -137,29 +189,6 @@ export class DataFrame {
     return rows;
   }
 
-  /*
-  detectTypes(): Record<string, string> {
-    const types: Record<string, string> = {};
-    this.columns.forEach((col) => {
-      const colTypes = this.data.map((row) => typeof row[col]);
-      types[col] = colTypes.every((type) => type === "number") ? "number" : "string";
-    });
-    return types;
-  }
-*/
-  // Inside DataFrame.ts
-  detectTypes(): Record<string, string> {
-    const types: Record<string, string> = {};
-    this.columns.forEach((col) => {
-      const colTypes = this.data
-        .map((row) => row[col])
-        .filter((value) => value !== null) // Exclude null values from type check
-        .map((value) => typeof value);
-
-      types[col] = colTypes.every((type) => type === 'number') ? 'number' : 'string';
-    });
-    return types;
-  }
 
 
   /*

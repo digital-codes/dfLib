@@ -43,7 +43,7 @@ describe('DataFrame', () => {
             [3, 'Charlie', 30]
         ];
         const arrayData1 = [
-            ["col1","col2","col3"],
+            ["col1", "col2", "col3"],
             [1, 'Alice', 25],
             [2, 'Bob', null],
             [3, 'Charlie', 30]
@@ -56,7 +56,7 @@ describe('DataFrame', () => {
     // create from array with default hdr option
     test('should initialize with array data and read column names from row0', () => {
         const arrayData = [
-            ["X1","X2","X3"],
+            ["X1", "X2", "X3"],
             [1, 'Alice', 25],
             [2, 'Bob', null],
             [3, 'Charlie', 30]
@@ -68,7 +68,7 @@ describe('DataFrame', () => {
 
 
     test('should detect types of columns', () => {
-        expect(df.detectTypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
+        expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
     });
 
     // src/DataFrame.test.ts
@@ -308,116 +308,200 @@ describe('DataFrame', () => {
                 ]);
             });
         });
-   
+
 
     });
 
     describe('selectRows method with specific column values', () => {
         let df: DataFrame;
+
+        beforeEach(() => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 },
+                { id: 3, name: 'Alice', age: 35 },
+                { id: 4, name: 'Alice', age: 25 }
+            ];
+            df = new DataFrame(data);
+        });
+
+        test('should select rows based on multiple column values', () => {
+            const selectedDf = df.selectRows({ name: 'Alice', age: 25 });
+            expect(selectedDf.toJSON()).toEqual([
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 4, name: 'Alice', age: 25 }
+            ]);
+        });
+
+        test('should select rows based on a single column value', () => {
+            const selectedDf = df.selectRows({ age: 30 });
+            expect(selectedDf.toJSON()).toEqual([
+                { id: 2, name: 'Bob', age: 30 }
+            ]);
+        });
+
+        test('should return an empty DataFrame if no rows match the criteria', () => {
+            const selectedDf = df.selectRows({ name: 'Charlie', age: 25 });
+            expect(selectedDf.toJSON()).toEqual([]);
+        });
+
+        test('should select rows based on all specified columns', () => {
+            const selectedDf = df.selectRows({ id: 1, name: 'Alice', age: 25 });
+            expect(selectedDf.toJSON()).toEqual([
+                { id: 1, name: 'Alice', age: 25 }
+            ]);
+        });
+    });
+
+
+    describe('renameColumns method', () => {
+        test('should rename one or more columns in the DataFrame', () => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 }
+            ];
+            const df = new DataFrame(data);
+
+            df.renameColumns({ name: 'full_name', age: 'years' });
+
+            expect(df.toJSON()).toEqual([
+                { id: 1, full_name: 'Alice', years: 25 },
+                { id: 2, full_name: 'Bob', years: 30 }
+            ]);
+
+            expect(df.columnNames()).toEqual(['id', 'full_name', 'years']);
+        });
+    });
+
+    describe('DataFrame dtypes detection', () => {
+        test('should detect types and set to undefined if NaN values are present', () => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: NaN },
+                { id: 3, name: 'Charlie', age: 30 }
+            ];
+            const df = new DataFrame(data);
+
+            expect(df.getDtypes()).toEqual({
+                id: 'number',
+                name: 'string',
+                age: undefined
+            });
+        });
+
+        test('should detect types correctly when no NaN values are present', () => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 },
+                { id: 3, name: 'Charlie', age: 35 }
+            ];
+            const df = new DataFrame(data);
+
+            expect(df.getDtypes()).toEqual({
+                id: 'number',
+                name: 'string',
+                age: 'number'
+            });
+        });
+
+        test('should detect mixed types when column contains different data types', () => {
+            const data = [
+                { id: 1, name: 'Alice', mixed: 25 },
+                { id: 2, name: 'Bob', mixed: 'hello' },
+                { id: 3, name: 'Charlie', mixed: true }
+            ];
+            const df = new DataFrame(data);
+            expect(df.getDtypes()).toEqual({
+                id: 'number',
+                name: 'string',
+                mixed: 'mixed'
+            });
+        });
+    });
+
+    describe('getUniqueValues method', () => {
+        let df: DataFrame;
+
+        beforeEach(() => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 },
+                { id: 3, name: 'Alice', age: 35 },
+                { id: 4, name: 'Charlie', age: 30 }
+            ];
+            df = new DataFrame(data);
+        });
+
+        test('should return unique values for a specified column', () => {
+            expect(df.unique('name')).toEqual(['Alice', 'Bob', 'Charlie']);
+            expect(df.unique('age')).toEqual([25, 30, 35]);
+        });
+
+        test('should return an empty array for a column with all null values', () => {
+            const nullData = [
+                { id: 1, emptyCol: null },
+                { id: 2, emptyCol: null }
+            ];
+            const dfWithNulls = new DataFrame(nullData);
+            expect(dfWithNulls.unique('emptyCol')).toEqual([null]);
+        });
+
+        test('should throw an error if the column does not exist', () => {
+            expect(() => df.unique('nonExistentColumn')).toThrow(
+                'Column "nonExistentColumn" does not exist in the DataFrame'
+            );
+        });
+    });
+
+
+    describe('addColumn method', () => {
+        let df: DataFrame;
       
         beforeEach(() => {
           const data = [
-            { id: 1, name: 'Alice', age: 25 },
-            { id: 2, name: 'Bob', age: 30 },
-            { id: 3, name: 'Alice', age: 35 },
-            { id: 4, name: 'Alice', age: 25 }
+            { id: 1, name: 'Alice' },
+            { id: 2, name: 'Bob' },
+            { id: 3, name: 'Charlie' }
           ];
           df = new DataFrame(data);
         });
       
-        test('should select rows based on multiple column values', () => {
-          const selectedDf = df.selectRows({ name: 'Alice', age: 25 });
-          expect(selectedDf.toJSON()).toEqual([
-            { id: 1, name: 'Alice', age: 25 },
-            { id: 4, name: 'Alice', age: 25 }
-          ]);
-        });
-      
-        test('should select rows based on a single column value', () => {
-          const selectedDf = df.selectRows({ age: 30 });
-          expect(selectedDf.toJSON()).toEqual([
-            { id: 2, name: 'Bob', age: 30 }
-          ]);
-        });
-      
-        test('should return an empty DataFrame if no rows match the criteria', () => {
-          const selectedDf = df.selectRows({ name: 'Charlie', age: 25 });
-          expect(selectedDf.toJSON()).toEqual([]);
-        });
-      
-        test('should select rows based on all specified columns', () => {
-          const selectedDf = df.selectRows({ id: 1, name: 'Alice', age: 25 });
-          expect(selectedDf.toJSON()).toEqual([
-            { id: 1, name: 'Alice', age: 25 }
-          ]);
-        });
-      });
-      
-
-    describe('renameColumns method', () => {
-        test('should rename one or more columns in the DataFrame', () => {
-          const data = [
-            { id: 1, name: 'Alice', age: 25 },
-            { id: 2, name: 'Bob', age: 30 }
-          ];
-          const df = new DataFrame(data);
-      
-          df.renameColumns({ name: 'full_name', age: 'years' });
-          
+        test('should add a new column with an array of values', () => {
+          df.addColumn('age', [25, 30, 35]);
           expect(df.toJSON()).toEqual([
-            { id: 1, full_name: 'Alice', years: 25 },
-            { id: 2, full_name: 'Bob', years: 30 }
-          ]);
-      
-          expect(df.columnNames()).toEqual(['id', 'full_name', 'years']);
-        });
-      });
-
-      describe('DataFrame dtypes detection', () => {
-        test('should detect types and set to undefined if NaN values are present', () => {
-          const data = [
-            { id: 1, name: 'Alice', age: 25 },
-            { id: 2, name: 'Bob', age: NaN },
-            { id: 3, name: 'Charlie', age: 30 }
-          ];
-          const df = new DataFrame(data);
-      
-          expect(df.getDtypes()).toEqual({
-            id: 'number',
-            name: 'string',
-            age: undefined
-          });
-        });
-      
-        test('should detect types correctly when no NaN values are present', () => {
-          const data = [
             { id: 1, name: 'Alice', age: 25 },
             { id: 2, name: 'Bob', age: 30 },
             { id: 3, name: 'Charlie', age: 35 }
-          ];
-          const df = new DataFrame(data);
-      
-          expect(df.getDtypes()).toEqual({
-            id: 'number',
-            name: 'string',
-            age: 'number'
-          });
+          ]);
+          // check dtypes
+          expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
+        });
+
+          
+        test('should add a new column with a single default value', () => {
+          df.addColumn('country', 'USA');
+          expect(df.toJSON()).toEqual([
+            { id: 1, name: 'Alice', country: 'USA' },
+            { id: 2, name: 'Bob', country: 'USA' },
+            { id: 3, name: 'Charlie', country: 'USA' }
+          ]);
+          // check dtypes
+          expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', country: 'string' });
         });
       
-        test('should detect mixed types when column contains different data types', () => {
-          const data = [
-            { id: 1, name: 'Alice', mixed: 25 },
-            { id: 2, name: 'Bob', mixed: 'hello' },
-            { id: 3, name: 'Charlie', mixed: true }
-          ];
-          const df = new DataFrame(data);
-          expect(df.getDtypes()).toEqual({
-            id: 'number',
-            name: 'string',
-            mixed: 'mixed'
-          });
+        test('should throw an error if column name already exists', () => {
+          expect(() => df.addColumn('name', 'Test')).toThrow(
+            'Column "name" already exists in the DataFrame'
+          );
+        });
+      
+        test('should throw an error if array length does not match number of rows', () => {
+          expect(() => df.addColumn('age', [25, 30])).toThrow(
+            'Length of values array (2) does not match the number of rows (3)'
+          );
         });
       });
-            
+      
+
 
 });
