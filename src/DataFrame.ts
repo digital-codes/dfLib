@@ -32,64 +32,6 @@ export class DataFrame {
     this.dtypes = this.detectDtypes();
   }
 
-  // Detects and stores data types for each column
-  /**
-   * Detects the data types of the columns in the DataFrame.
-   * 
-   * This method iterates over each column in the DataFrame and determines the data type
-   * of the column based on its values. If any value in the column is NaN, the data type
-   * for that column is set to `undefined`. Otherwise, it checks the types of non-null
-   * and non-undefined values to infer the column type. The inferred type can be 'number',
-   * 'string', or 'mixed'.
-   * 
-   * @returns {Object} An object where the keys are column names and the values are the
-   * inferred data types ('number', 'string', 'mixed', or `undefined`).
-   */
-  private detectDtypes(column: string | null = null): { [key: string]: string | undefined } {
-    const types: { [key: string]: string | undefined } = {};
-
-    this.columns.forEach((col) => {
-      types[col] = this.detectDtype(col);
-    });
-
-    return types;
-  }
-
-  private detectDtype(column: string): string | undefined {
-
-    if (!this.columns.includes(column)) {
-      throw new Error(`Column "${column}" does not exist in the DataFrame`);
-    }
-
-    let type: string | undefined = undefined;
-
-    const colValues = this.data.map((row) => row[column]);
-
-    // Check for NaN values; if any found, set dtype to undefined
-    const hasNaN = colValues.some((value) => typeof value === 'number' && isNaN(value));
-    if (hasNaN) {
-      type = undefined;
-    } else {
-      // Determine column type if there are no NaNs
-      const nonNullValues = colValues.filter((value) => value !== null && value !== undefined);
-      const inferredType = nonNullValues.every((value) => typeof value === 'number')
-        ? 'number'
-        : nonNullValues.every((value) => typeof value === 'string')
-          ? 'string'
-          : 'mixed';
-
-      type = inferredType;
-    }
-
-    return type;
-  }
-
-
-  // Accessor method to retrieve dtypes
-  getDtypes(): { [key: string]: string | undefined } {
-    return this.dtypes;
-  }
-
   // normally, we have tables with header. optionally infer names of columns
   static fromArray(data: any[][], infer: boolean = false): DataFrame {
     if (!infer) {
@@ -123,6 +65,61 @@ export class DataFrame {
       return new DataFrame(rowData, colNames);
     }
   }
+
+
+  // Detects and stores data types for each column
+  /**
+   * Detects the data types of the columns in the DataFrame.
+   * 
+   * This method iterates over each column in the DataFrame and determines the data type
+   * of the column based on its values. If any value in the column is NaN, the data type
+   * for that column is set to `undefined`. Otherwise, it checks the types of non-null
+   * and non-undefined values to infer the column type. The inferred type can be 'number',
+   * 'string', or 'mixed'.
+   * 
+   * @returns {Object} An object where the keys are column names and the values are the
+   * inferred data types ('number', 'string', 'mixed', or `undefined`).
+   */
+  private detectDtypes(column: string | null = null): { [key: string]: string | undefined } {
+    const types: { [key: string]: string | undefined } = {};
+
+    this.columns.forEach((col) => {
+      types[col] = this.detectDtype(col);
+    });
+
+    return types;
+  }
+
+  private detectDtype(column: string): string | undefined {
+    if (!this.columns.includes(column)) {
+      throw new Error(`Column "${column}" does not exist in the DataFrame`);
+    }
+
+    const colValues = this.data.map((row) => row[column]);
+
+    // Check for NaN values; if any found, set dtype to undefined
+    const hasNaN = colValues.some((value) => typeof value === 'number' && isNaN(value));
+    if (hasNaN) {
+      return undefined;
+    } else {
+      // Determine column type if there are no NaNs
+      const nonNullValues = colValues.filter((value) => value !== null && value !== undefined);
+      const inferredType = nonNullValues.every((value) => typeof value === 'number')
+        ? 'number'
+        : nonNullValues.every((value) => typeof value === 'string')
+          ? 'string'
+          : 'mixed';
+
+      return inferredType;
+    }
+  }
+
+
+  // Accessor method to retrieve dtypes
+  getDtypes(): { [key: string]: string | undefined } {
+    return this.dtypes;
+  }
+
 
   columnNames(): string[] {
     return this.columns;
@@ -163,7 +160,6 @@ export class DataFrame {
     // Update the dtype for the new column
     this.dtypes[columnName] = this.detectDtype(columnName)
   }
-
 
 
   toJSON(records: boolean = true): Row[] | { [key: string]: any[] } {
