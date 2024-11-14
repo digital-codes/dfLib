@@ -162,6 +162,43 @@ export class DataFrame {
   }
 
 
+  // Method to transpose the DataFrame on a given column
+  transpose(keyColumn: string, keyLabel: string | null = null): DataFrame {
+    if (!this.columns.includes(keyColumn)) {
+      throw new Error(`Column "${keyColumn}" does not exist in the DataFrame`);
+    }
+
+    // Check for duplicate values in the key column
+    const keyValues = this.data.map(row => row[keyColumn]);
+    const uniqueKeys = new Set(keyValues);
+    if (uniqueKeys.size !== keyValues.length) {
+      throw new Error(`Duplicate values found in column "${keyColumn}". Each key must be unique for transposing.`);
+    }
+
+    // Prepare transposed data
+    const transposedData: Row[] = [];
+    const otherColumns = this.columns.filter(col => col !== keyColumn);
+
+    // Build rows by mapping each original column (except keyColumn) to the unique key values
+    otherColumns.forEach(col => {
+      const newRow: Row = { [keyColumn]: col };
+      this.data.forEach(row => {
+        const key = row[keyColumn];
+        newRow[key] = row[col];
+      });
+      transposedData.push(newRow);
+    });
+
+    // Create the new DataFrame with transposed data
+    const newDf = new DataFrame(transposedData, [keyColumn, ...Array.from(uniqueKeys)]);
+    // 
+    if (keyLabel) {
+      newDf.renameColumns({ [keyColumn]: keyLabel });
+    }
+    return newDf
+
+  }
+
   toJSON(records: boolean = true): Row[] | { [key: string]: any[] } {
     if (records) {
       // Default row-oriented export (array of row objects)

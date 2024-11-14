@@ -545,4 +545,74 @@ describe('DataFrame', () => {
         });
     });
 
+    describe('DataFrame transpose method', () => {
+        test('should transpose DataFrame on a given column with unique values', () => {
+          const data = [
+            { year: 2020, revenue: 100, profit: 20 },
+            { year: 2021, revenue: 150, profit: 30 },
+            { year: 2022, revenue: 200, profit: 50 }
+          ];
+          const df = new DataFrame(data);
+      
+          const transposedDf = df.transpose('year');
+          const expectedData = [
+            { year: 'revenue', 2020: 100, 2021: 150, 2022: 200 },
+            { year: 'profit', 2020: 20, 2021: 30, 2022: 50 }
+          ];
+      
+          expect(transposedDf.toJSON()).toEqual(expectedData);
+        });
+      
+        test('should throw an error if key column has duplicate values', () => {
+          const data = [
+            { year: 2020, revenue: 100, profit: 20 },
+            { year: 2020, revenue: 150, profit: 30 },
+            { year: 2021, revenue: 200, profit: 50 }
+          ];
+          const df = new DataFrame(data);
+      
+          expect(() => df.transpose('year')).toThrow(
+            'Duplicate values found in column "year". Each key must be unique for transposing.'
+          );
+        });
+      
+        test('should throw an error if key column does not exist', () => {
+          const data = [
+            { year: 2020, revenue: 100, profit: 20 },
+            { year: 2021, revenue: 150, profit: 30 }
+          ];
+          const df = new DataFrame(data);
+      
+          expect(() => df.transpose('nonexistentColumn')).toThrow(
+            'Column "nonexistentColumn" does not exist in the DataFrame'
+          );
+        });
+      
+        test('should transpose DataFrame with relabeling ', () => {
+          const data = [
+            { month: 'Jan', sales: 500, expenses: 300 },
+            { month: 'Feb', sales: 600, expenses: 350 },
+            { month: 'Mar', sales: 550, expenses: 320 }
+          ];
+          const df = new DataFrame(data);
+      
+          const transposedDf = df.transpose('month',"lbl");
+          const expectedData = [
+            { lbl: 'sales', Jan: 500, Feb: 600, Mar: 550 },
+            { lbl: 'expenses', Jan: 300, Feb: 350, Mar: 320 }
+          ];
+          expect(transposedDf.toJSON()).toEqual(expectedData);
+          const expectedArray = [
+            ["lbl", "Jan", "Feb", "Mar"],
+            ["sales", 500, 600, 550],
+            ["expenses", 300, 350, 320]
+          ];
+          expect(transposedDf.toArray()).toEqual(expectedArray);
+
+        });
+
+  
+    });
+      
+
 });
