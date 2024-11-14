@@ -456,52 +456,93 @@ describe('DataFrame', () => {
 
     describe('addColumn method', () => {
         let df: DataFrame;
-      
+
         beforeEach(() => {
-          const data = [
-            { id: 1, name: 'Alice' },
-            { id: 2, name: 'Bob' },
-            { id: 3, name: 'Charlie' }
-          ];
-          df = new DataFrame(data);
+            const data = [
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+                { id: 3, name: 'Charlie' }
+            ];
+            df = new DataFrame(data);
         });
-      
+
         test('should add a new column with an array of values', () => {
-          df.addColumn('age', [25, 30, 35]);
-          expect(df.toJSON()).toEqual([
-            { id: 1, name: 'Alice', age: 25 },
-            { id: 2, name: 'Bob', age: 30 },
-            { id: 3, name: 'Charlie', age: 35 }
-          ]);
-          // check dtypes
-          expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
+            df.addColumn('age', [25, 30, 35]);
+            expect(df.toJSON()).toEqual([
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 },
+                { id: 3, name: 'Charlie', age: 35 }
+            ]);
+            // check dtypes
+            expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
         });
 
-          
+
         test('should add a new column with a single default value', () => {
-          df.addColumn('country', 'USA');
-          expect(df.toJSON()).toEqual([
-            { id: 1, name: 'Alice', country: 'USA' },
-            { id: 2, name: 'Bob', country: 'USA' },
-            { id: 3, name: 'Charlie', country: 'USA' }
-          ]);
-          // check dtypes
-          expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', country: 'string' });
+            df.addColumn('country', 'USA');
+            expect(df.toJSON()).toEqual([
+                { id: 1, name: 'Alice', country: 'USA' },
+                { id: 2, name: 'Bob', country: 'USA' },
+                { id: 3, name: 'Charlie', country: 'USA' }
+            ]);
+            // check dtypes
+            expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', country: 'string' });
         });
-      
-        test('should throw an error if column name already exists', () => {
-          expect(() => df.addColumn('name', 'Test')).toThrow(
-            'Column "name" already exists in the DataFrame'
-          );
-        });
-      
-        test('should throw an error if array length does not match number of rows', () => {
-          expect(() => df.addColumn('age', [25, 30])).toThrow(
-            'Length of values array (2) does not match the number of rows (3)'
-          );
-        });
-      });
-      
 
+        test('should throw an error if column name already exists', () => {
+            expect(() => df.addColumn('name', 'Test')).toThrow(
+                'Column "name" already exists in the DataFrame'
+            );
+        });
+
+        test('should throw an error if array length does not match number of rows', () => {
+            expect(() => df.addColumn('age', [25, 30])).toThrow(
+                'Length of values array (2) does not match the number of rows (3)'
+            );
+        });
+    });
+
+
+    describe('DataFrame statistical methods', () => {
+        let df: DataFrame;
+
+        beforeEach(() => {
+            const data = [
+                { id: 1, name: 'Alice', age: 25 },
+                { id: 2, name: 'Bob', age: 30 },
+                { id: 3, name: 'Charlie', age: 35 },
+                { id: 4, name: 'Diana', age: null },
+                { id: 5, name: 'Eve', age: NaN }
+            ];
+            df = new DataFrame(data);
+        });
+
+        test('count should return the number of rows', () => {
+            expect(df.count()).toBe(5);
+        });
+
+        test('count should return the number of valid values in the column', () => {
+            expect(df.valueCount('age')).toBe(3);
+        });
+
+        test('mean should calculate the average of numeric values in the column', () => {
+            expect(df.mean('age')).toBe(30);
+        });
+
+        test('min should return the minimum value in the column', () => {
+            expect(df.min('age')).toBe(25);
+        });
+
+        test('max should return the maximum value in the column', () => {
+            expect(df.max('age')).toBe(35);
+        });
+
+        test('count, mean, min, max should return NaN for a non-numeric column', () => {
+            expect(df.valueCount('name')).toBe(0);
+            expect(df.mean('name')).toBeNaN();
+            expect(df.min('name')).toBeNaN();
+            expect(df.max('name')).toBeNaN();
+        });
+    });
 
 });
