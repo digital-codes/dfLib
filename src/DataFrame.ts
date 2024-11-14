@@ -249,33 +249,33 @@ export class DataFrame {
   }
 
   // Count number of non-null values in the column
-    valueCount(column: string): number {
-      return this.data.reduce((acc, row) => {
-        const value = row[column];
-        return acc + (value !== null && value !== undefined && !isNaN(value) ? 1 : 0);
-      }, 0);
-    }
+  valueCount(column: string): number {
+    return this.data.reduce((acc, row) => {
+      const value = row[column];
+      return acc + (value !== null && value !== undefined && !isNaN(value) ? 1 : 0);
+    }, 0);
+  }
 
 
-    // Calculate mean (average) for the column
-    mean(column: string): number {
-      const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
-      if (values.length === 0) return NaN;
-      const sum = values.reduce((acc, value) => acc + value, 0);
-      return sum / values.length;
-    }
-  
-    // Calculate the minimum value in the column
-    min(column: string): number {
-      const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
-      return values.length > 0 ? Math.min(...values) : NaN;
-    }
-  
-    // Calculate the maximum value in the column
-    max(column: string): number {
-      const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
-      return values.length > 0 ? Math.max(...values) : NaN;
-    }
+  // Calculate mean (average) for the column
+  mean(column: string): number {
+    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    if (values.length === 0) return NaN;
+    const sum = values.reduce((acc, value) => acc + value, 0);
+    return sum / values.length;
+  }
+
+  // Calculate the minimum value in the column
+  min(column: string): number {
+    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    return values.length > 0 ? Math.min(...values) : NaN;
+  }
+
+  // Calculate the maximum value in the column
+  max(column: string): number {
+    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    return values.length > 0 ? Math.max(...values) : NaN;
+  }
 
 
   selectCols(columns: string[]): DataFrame {
