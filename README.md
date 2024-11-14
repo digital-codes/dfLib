@@ -40,3 +40,19 @@ like
 ```
 
 
+## Install from Github
+
+To install directly from GitHub, push your library to a GitHub repository and install it in your project by referencing the GitHub URL in package.json.
+
+ * In the target project
+> npm install git+https://github.com/digital-codes/dfLib.git
+
+ * Alternatively, add the dependency directly to package.json:
+> {
+  "dependencies":  
+    {
+      "dfLib":  
+        "git+https://github.com/digital-codes/dfLib.git"  
+    }  
+  }
+
