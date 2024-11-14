@@ -1,9 +1,12 @@
+**dflib v1.0.0** • [**Docs**](globals.md)
+
+***
+
 # Minimal dataframe library in Typescript
 
 ## Why
 
 More capable libraries like DanfoJs and Data-Forge appear to be no longer maintained.
-
 
 ## Use Cases
 Web apps needing some basic data conversion functionality, e.g. data dashboards.
@@ -32,7 +35,6 @@ For full documentation see docs folder
 
 ### Transpose
 
-
 ## Installation
 
 ### Currently only from Github
@@ -44,7 +46,4 @@ For full documentation see docs folder
 > npm install git+https://github.com/digital-codes/dflib  
 npm i  
 npm run test  
-npm run build  
-
-
-
+npm run build

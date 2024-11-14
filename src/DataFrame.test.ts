@@ -141,7 +141,7 @@ describe('DataFrame', () => {
     });
 
     test('should drop specific columns', () => {
-        const dropped = df.drop(['age']);
+        const dropped = df.dropCols(['age']);
         expect(dropped.toJSON()).toStrictEqual([
             { id: 1, name: 'Alice' },
             { id: 2, name: 'Bob' },
