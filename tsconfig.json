@@ -1,9 +1,13 @@
 
 {
     "compilerOptions": {
+      "declaration": true,               // Generate .d.ts files
+      "declarationMap": true,            // Generate .d.ts.map files (optional, for debugging)
+      "emitDeclarationOnly": false,      // Emit both .js and .d.ts files
       "target": "ES6",                       // Specify ECMAScript target version
-      "lib": ["es2019","dom"],      // Specify library files to be included in the compilation
-      "module": "commonjs",                   // Use commonjs for Node.js compatibility
+      "lib": ["es2019","dom"],                // Specify library files to be included in the compilation
+      //"module": "commonjs",                   // Use commonjs for Node.js compatibility
+      "module":"ES6",
       "strict": true,                         // Enable all strict type-checking options
       "esModuleInterop": true,                // Allows default import from CommonJS modules
       "skipLibCheck": true,                   // Skip type checking of declaration files
@@ -13,7 +17,7 @@
       "rootDir": "./src",                     // Specify the root directory of input files
       "types": ["jest"]                       // Include Jest types for testing
     },
-    "include": ["src/**/*"],                  // Include all files in the src directory
+    "include": ["src/**/*.ts"],                  // Include all files in the src directory
     "exclude": ["node_modules", "dist"]       // Exclude node_modules and dist from compilation
   }
   
