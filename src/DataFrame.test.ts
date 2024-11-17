@@ -71,65 +71,6 @@ describe('DataFrame', () => {
         expect(df.getDtypes()).toStrictEqual({ id: 'number', name: 'string', age: 'number' });
     });
 
-    // src/DataFrame.test.ts
-
-    describe('DataFrame fillNA method', () => {
-        let df: DataFrame;
-
-        beforeEach(() => {
-            const jsonData = [
-                { id: 1, value: 10 },
-                { id: 2, value: null },
-                { id: 3, value: null },
-                { id: 4, value: 40 },
-                { id: 5, value: null },
-                { id: 6, value: 60 }
-            ];
-            df = new DataFrame(jsonData);
-        });
-
-        // Inside DataFrame.test.ts
-
-        test('should fill NA with specified static value', () => {
-            df.fillNA(0); // Modify df in place
-            expect(df.toJSON()).toStrictEqual([
-                { id: 1, value: 10 },
-                { id: 2, value: 0 },
-                { id: 3, value: 0 },
-                { id: 4, value: 40 },
-                { id: 5, value: 0 },
-                { id: 6, value: 60 }
-            ]);
-        });
-
-        test('should fill NA with forward fill (ffill)', () => {
-            df.fillNA(null, 'ffill');
-            expect(df.toJSON()).toStrictEqual([
-                { id: 1, value: 10 },
-                { id: 2, value: 10 },
-                { id: 3, value: 10 },
-                { id: 4, value: 40 },
-                { id: 5, value: 40 },
-                { id: 6, value: 60 }
-            ]);
-        });
-
-        test('should fill NA with backfill (bfill)', () => {
-            df.fillNA(null, 'bfill');
-            expect(df.toJSON()).toStrictEqual([
-                { id: 1, value: 10 },
-                { id: 2, value: 40 },
-                { id: 3, value: 40 },
-                { id: 4, value: 40 },
-                { id: 5, value: 60 },
-                { id: 6, value: 60 }
-            ]);
-        });
-
-
-
-
-    });
 
     test('should select specific columns', () => {
         const selected = df.selectCols(['id', 'name']);
@@ -235,6 +176,94 @@ describe('DataFrame', () => {
                 { col1: 5, col2: 'E', value2: 50 }
             ]);
         });
+    });
+
+    // handle missing values
+    describe('DataFrame contructor', () => {
+        let df: DataFrame;
+        const jsonIn = [
+            { id: 1, name: 'Alice' },
+            { id: 2,  age: null },
+            { id: 3, name: 'Charlie', age: 30 }
+        ];
+
+        const jsonOut = [
+            { id: 1, name: 'Alice', age: null },
+            { id: 2,  age: null, name: null },
+            { id: 3, name: 'Charlie', age: 30 }
+        ];
+        
+        beforeEach(() => {
+            df = new DataFrame(jsonIn);
+        });
+
+        test('should find all column names', () => {
+            expect(df.columnNames()).toEqual(['id', 'name', 'age']);
+        });
+
+        test('should include missing', () => {
+            expect(df.toJSON()).toEqual(jsonOut);
+        });
+    })
+    
+
+
+    // src/DataFrame.test.ts
+
+    describe('DataFrame fillNA method', () => {
+        let df: DataFrame;
+
+        beforeEach(() => {
+            const jsonData = [
+                { id: 1, value: 10 },
+                { id: 2, value: null },
+                { id: 3, value: null },
+                { id: 4, value: 40 },
+                { id: 5, value: null },
+                { id: 6, value: 60 }
+            ];
+            df = new DataFrame(jsonData);
+        });
+
+        // Inside DataFrame.test.ts
+
+        test('should fill NA with specified static value', () => {
+            df.fillNA(0); // Modify df in place
+            expect(df.toJSON()).toStrictEqual([
+                { id: 1, value: 10 },
+                { id: 2, value: 0 },
+                { id: 3, value: 0 },
+                { id: 4, value: 40 },
+                { id: 5, value: 0 },
+                { id: 6, value: 60 }
+            ]);
+        });
+
+        test('should fill NA with forward fill (ffill)', () => {
+            df.fillNA(null, 'ffill');
+            expect(df.toJSON()).toStrictEqual([
+                { id: 1, value: 10 },
+                { id: 2, value: 10 },
+                { id: 3, value: 10 },
+                { id: 4, value: 40 },
+                { id: 5, value: 40 },
+                { id: 6, value: 60 }
+            ]);
+        });
+
+        test('should fill NA with backfill (bfill)', () => {
+            df.fillNA(null, 'bfill');
+            expect(df.toJSON()).toStrictEqual([
+                { id: 1, value: 10 },
+                { id: 2, value: 40 },
+                { id: 3, value: 40 },
+                { id: 4, value: 40 },
+                { id: 5, value: 60 },
+                { id: 6, value: 60 }
+            ]);
+        });
+
+
     });
 
     // src/DataFrame.test.ts
