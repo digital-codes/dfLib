@@ -50,12 +50,30 @@ export class DataFrame {
    */
   constructor(data: Row[] | any[][], columns?: string[]) {
     if (Array.isArray(data) && Array.isArray(data[0])) {
+      // table input from 2D array with columns
       if (!columns) throw new Error("Column names are required for 2D array data.");
-      this.data = (data as any[][]).map((row) => Object.fromEntries(row.map((cell, i) => [columns[i], cell])));
+      // this.data = (data as any[][]).map((row) => Object.fromEntries(row.map((cell, i) => [columns[i], cell])));
+      this.data = (data as any[][]).map((row) =>
+        Object.fromEntries(
+          columns.map((col, i) => [col, row[i] === undefined ? null : row[i]])
+        )
+      );
       this.columns = columns
     } else {
-      this.data = data as Row[];
-      this.columns = columns || Object.keys(this.data[0] || {});
+      // record input from array of objects
+      // Detect all unique keys across all rows
+      const detectedColumns = Array.from(new Set(data.flatMap(row => Object.keys(row))));
+      this.columns = columns || detectedColumns;
+
+      // console.log("columns", this.columns)
+      // Normalize rows to ensure all rows have all keys, filling missing keys with `null`
+      this.data = data.map(row => {
+        const normalizedRow: Row = {};
+        this.columns.forEach(col => {
+          normalizedRow[col] = (row as Row).hasOwnProperty(col) ? (row as Row)[col] : null;
+        });
+        return normalizedRow;
+      });
     }
     this.dtypes = this.detectDtypes();
   }

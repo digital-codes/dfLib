@@ -106,8 +106,8 @@ describe('DataFrame', () => {
         const joinedDF = df.join(otherDF, 'id', 'left');
         expect(joinedDF.toJSON()).toStrictEqual([
             { id: 1, name: 'Alice', age: 25, city: 'New York' },
-            { id: 2, name: 'Bob', age: null },
-            { id: 3, name: 'Charlie', age: 30 }
+            { id: 2, name: 'Bob', age: null, city: null },
+            { id: 3, name: 'Charlie', age: 30, city: null }
         ]);
     });
 
@@ -117,7 +117,7 @@ describe('DataFrame', () => {
         const joinedDF = df.join(otherDF, 'id', 'right');
         expect(joinedDF.toJSON()).toStrictEqual([
             { id: 1, name: 'Alice', age: 25, city: 'New York' },
-            { id: 4, city: 'San Francisco' }
+            { id: 4, name: null, age: null, city: 'San Francisco' }
         ]);
     });
 
@@ -127,9 +127,9 @@ describe('DataFrame', () => {
         const joinedDF = df.join(otherDF, 'id', 'outer');
         expect(joinedDF.toJSON()).toStrictEqual([
             { id: 1, name: 'Alice', age: 25, city: 'New York' },
-            { id: 2, name: 'Bob', age: null },
-            { id: 3, name: 'Charlie', age: 30 },
-            { id: 4, city: 'San Francisco' }
+            { id: 2, name: 'Bob', age: null, city:null },
+            { id: 3, name: 'Charlie', age: 30, city:null },
+            { id: 4, city: 'San Francisco',age:null, name:null }
         ]);
     });
 
@@ -169,17 +169,102 @@ describe('DataFrame', () => {
             expect(joinedDF.toJSON()).toEqual([
                 { col1: 1, col2: 'A', value1: 100, value2: 10 },
                 { col1: 2, col2: 'B', value1: 200, value2: 20 },
-                { col1: 3, col2: 'C', value1: 300 },
-                { col1: 4, col2: 'D', value1: 400 },
-                { col1: 3, col2: 'X', value2: 30 },
-                { col1: 4, col2: 'X', value2: 40 },
-                { col1: 5, col2: 'E', value2: 50 }
+                { col1: 3, col2: 'C', value1: 300, value2: null },
+                { col1: 4, col2: 'D', value1: 400, value2: null  },
+                { col1: 3, col2: 'X', value2: 30, value1: null  },
+                { col1: 4, col2: 'X', value2: 40, value1: null  },
+                { col1: 5, col2: 'E', value2: 50, value1: null  }
             ]);
         });
     });
 
-    // handle missing values
-    describe('DataFrame contructor', () => {
+    // constructor from json arrays
+    describe('DataFrame from json array via constructor', () => {
+        let df: DataFrame;
+        const jsonIn = {
+            id: [1,2,3],
+            name:["Alice", null, "Charlie"],
+            age: [null, null, 30]
+        }
+
+        const jsonOut = [
+            { id: 1, name: 'Alice', age: null },
+            { id: 2,  age: null, name: null },
+            { id: 3, name: 'Charlie', age: 30 }
+        ];
+        
+        beforeEach(() => {
+            df = DataFrame.fromJSON(jsonIn);
+        });
+
+        test('should find all column names', () => {
+            expect(df.columnNames()).toEqual(['id', 'name', 'age']);
+        });
+
+        test('should include missing', () => {
+            expect(df.toJSON()).toEqual(jsonOut);
+        });
+    })
+
+    // constructor from 2d arrays
+    describe('DataFrame from table via constructor', () => {
+        let df: DataFrame;
+
+        const arrayData = [
+            ["X1", "X2", "X3"],
+            [1, 'Alice', 25],
+            [2, 'Bob', null],
+            [3, 'Charlie', 30]
+        ];
+
+        const jsonOut = [
+            { X1: 1, X2: 'Alice', X3: 25 },
+            { X1: 2,  X3: null, X2: "Bob" },
+            { X1: 3, X2: 'Charlie', X3: 30 }
+        ];
+        
+        df = new DataFrame(arrayData.slice(1), arrayData[0] as string[]);
+
+        expect(df.toArray()).toStrictEqual(arrayData);
+        expect(df.toJSON()).toStrictEqual(jsonOut);
+    })
+
+    // constructor from 2d arrays with empty cells
+    describe('DataFrame from table with empty cells via constructor', () => {
+        let df: DataFrame;
+
+        const arrayIn = [
+            ["X1", "X2", "X3"],
+            [1, 'Alice', 25],
+            [2, , null],
+            [3, 'Charlie', 30]
+        ];
+
+        const arrayOut = [
+            ["X1", "X2", "X3"],
+            [1, 'Alice', 25],
+            [2, null , null],
+            [3, 'Charlie', 30]
+        ];
+
+        const jsonOut = [
+            { X1: 1, X2: 'Alice', X3: 25 },
+            { X1: 2,  X3: null, X2: null },
+            { X1: 3, X2: 'Charlie', X3: 30 }
+        ];
+        
+        df = new DataFrame(arrayIn.slice(1), arrayIn[0] as string[]);
+
+        expect(df.toArray()).toStrictEqual(arrayOut);
+        expect(df.toJSON()).toStrictEqual(jsonOut);
+    })
+
+    
+    
+
+
+    // handle missing values on constructor
+    describe('DataFrame contructor with missing values', () => {
         let df: DataFrame;
         const jsonIn = [
             { id: 1, name: 'Alice' },
