@@ -20,6 +20,8 @@ For full documentation see docs folder
 
 ### Get Column Names
 
+### Get Datatypes
+
 ### Get distinct/unique values
 
 ### Select columns by name
@@ -29,6 +31,11 @@ For full documentation see docs folder
 ### Drop columns
 
 ### Add column
+
+### Add row
+
+### Join
+inner or left
 
 ### Transpose
 

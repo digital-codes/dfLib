@@ -1,8 +1,8 @@
-[**dflib v1.0.0**](../README.md) • **Docs**
+[**dflib v0.1.3**](../README.md) • **Docs**
 
 ***
 
-[dflib v1.0.0](../globals.md) / Row
+[dflib v0.1.3](../globals.md) / Row
 
 # Type Alias: Row
 
@@ -12,4 +12,4 @@ Represents a row in a data frame, where each key is a column name and the value 
 
 ## Defined in
 
-[DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/6fca9f8eff708f0376e61c2a98ea98cb21db9df3/src/DataFrame.ts#L8)
+[DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L8)

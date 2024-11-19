@@ -460,9 +460,9 @@ export class DataFrame {
 
   // Method to get the total number of rows
   /**
-   * Returns the number of elements in the DataFrame.
+   * Returns the number of rows in the DataFrame.
    *
-   * @returns {number} The count of elements in the DataFrame.
+   * @returns {number} The count of rows in the DataFrame.
    */
   count(): number {
     return this.data.length;

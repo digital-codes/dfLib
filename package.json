@@ -1,6 +1,6 @@
 {
   "name": "dflib",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A simple TypeScript DataFrame library",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

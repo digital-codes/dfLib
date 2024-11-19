@@ -1,4 +1,4 @@
-**dflib v1.0.0** • [**Docs**](globals.md)
+**dflib v0.1.3** • [**Docs**](globals.md)
 
 ***
 
@@ -9,7 +9,7 @@
 More capable libraries like DanfoJs and Data-Forge appear to be no longer maintained.
 
 ## Use Cases
-Web apps needing some basic data conversion functionality, e.g. data dashboards.
+Web apps needing some basic data conversion/processing functionality, e.g. data dashboards.
 
 ## Functions
 
@@ -23,6 +23,8 @@ For full documentation see docs folder
 
 ### Get Column Names
 
+### Get Datatypes
+
 ### Get distinct/unique values
 
 ### Select columns by name
@@ -32,6 +34,11 @@ For full documentation see docs folder
 ### Drop columns
 
 ### Add column
+
+### Add row
+
+### Join
+inner or left
 
 ### Transpose
 
