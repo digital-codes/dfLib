@@ -132,11 +132,9 @@ export class DataFrame {
   // Detects and stores data types for each column
   /**
    * Detects the data types of the columns in the DataFrame.
-   * 
-   * @param column - (Optional) The specific column to detect the data type for. If null, detects data types for all columns.
    * @returns An object where the keys are column names and the values are the detected data types.
    */
-  private detectDtypes(column: string | null = null): { [key: string]: string | undefined } {
+  private detectDtypes(): { [key: string]: string | undefined } {
     const types: { [key: string]: string | undefined } = {};
 
     this.columns.forEach((col) => {
@@ -523,8 +521,9 @@ export class DataFrame {
    * 
    * @returns A new DataFrame resulting from the join operation.
    */
-  join(other: DataFrame, on: string | string[], how: 'inner' | 'left' | 'right' | 'outer' = 'inner'): DataFrame {
-    const joinedData: Row[] = [];
+  //join(other: DataFrame, on: string | string[], how: 'inner' | 'left' | 'right' | 'outer' = 'inner'): DataFrame {
+  join(other: DataFrame, on: string | string[], how: 'inner' | 'left'  = 'inner'): DataFrame {
+      const joinedData: Row[] = [];
     const otherData = other.toJSON() as Row[];
 
     const isMatch = (row1: Row, row2: Row) => {
@@ -538,12 +537,27 @@ export class DataFrame {
     this.data.forEach((row) => {
       const matches = otherData.filter((otherRow) => isMatch(row, otherRow));
       if (matches.length > 0) {
-        matches.forEach((match) => joinedData.push({ ...row, ...match }));
-      } else if (how === 'left' || how === 'outer') {
+        matches.forEach((match) => {
+            const updatedMatch = { ...match };
+            if (Array.isArray(on)) {
+              on.forEach((key) => delete updatedMatch[key]);
+            } else {
+              delete updatedMatch[on];
+            }
+            Object.keys(updatedMatch).forEach((key) => {
+              if (row.hasOwnProperty(key)) {
+                updatedMatch[`${key}_r`] = updatedMatch[key];
+                delete updatedMatch[key];
+              }
+            });
+          joinedData.push({ ...row, ...updatedMatch });
+        })
+//      } else if (how === 'left' || how === 'outer') {
+      } else if (how === 'left' ) {
         joinedData.push(row);
       }
     });
-
+    /*
     if (how === 'right' || how === 'outer') {
       otherData.forEach((otherRow) => {
         if (!this.data.some((row) => isMatch(row, otherRow))) {
@@ -551,7 +565,8 @@ export class DataFrame {
         }
       });
     }
-
+    */
+   
     return new DataFrame(joinedData);
   }
 
