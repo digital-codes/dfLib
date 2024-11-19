@@ -2,14 +2,14 @@
 
 /**
  * Represents a row in a data frame, where each key is a column name and the value can be of any type.
- * 
+ *
  * @typedef {Record<string, any>} Row
-*/
+ */
 export type Row = Record<string, any>;
 
 /**
  * Represents a DataFrame, a 2-dimensional labeled data structure with columns of potentially different types.
- * 
+ *
  * @class
  * @example
  * // Creating a DataFrame from an array of rows
@@ -17,22 +17,22 @@ export type Row = Record<string, any>;
  *   { name: 'Alice', age: 25 },
  *   { name: 'Bob', age: 30 }
  * ]);
- * 
+ *
  * // Creating a DataFrame from a 2D array with column names
  * const df2 = new DataFrame([
  *   ['Alice', 25],
  *   ['Bob', 30]
  * ], ['name', 'age']);
- * 
+ *
  * // Creating a DataFrame from a JSON object
  * const df3 = DataFrame.fromJSON({
  *   name: ['Alice', 'Bob'],
  *   age: [25, 30]
  * });
- * 
+ *
  * @param {Row[] | any[][]} data - The data to be stored in the DataFrame. It can be either an array of rows (objects) or a 2D array.
  * @param {string[]} [columns] - Optional. The column names for the DataFrame. Required if `data` is a 2D array.
- * 
+ *
  * @throws {Error} If `data` is a 2D array and `columns` are not provided.
  */
 export class DataFrame {
@@ -42,35 +42,40 @@ export class DataFrame {
 
   /**
    * Constructs a new DataFrame instance.
-   * 
+   *
    * @param data - The data to be stored in the DataFrame. It can be either an array of rows (objects) or a 2D array.
    * @param columns - Optional. The column names for the DataFrame. Required if `data` is a 2D array.
-   * 
+   *
    * @throws {Error} If `data` is a 2D array and `columns` are not provided.
    */
   constructor(data: Row[] | any[][], columns?: string[]) {
     if (Array.isArray(data) && Array.isArray(data[0])) {
       // table input from 2D array with columns
-      if (!columns) throw new Error("Column names are required for 2D array data.");
+      if (!columns)
+        throw new Error("Column names are required for 2D array data.");
       // this.data = (data as any[][]).map((row) => Object.fromEntries(row.map((cell, i) => [columns[i], cell])));
       this.data = (data as any[][]).map((row) =>
         Object.fromEntries(
           columns.map((col, i) => [col, row[i] === undefined ? null : row[i]])
         )
       );
-      this.columns = columns
+      this.columns = columns;
     } else {
       // record input from array of objects
       // Detect all unique keys across all rows
-      const detectedColumns = Array.from(new Set(data.flatMap(row => Object.keys(row))));
+      const detectedColumns = Array.from(
+        new Set(data.flatMap((row) => Object.keys(row)))
+      );
       this.columns = columns || detectedColumns;
 
       // console.log("columns", this.columns)
       // Normalize rows to ensure all rows have all keys, filling missing keys with `null`
-      this.data = data.map(row => {
+      this.data = data.map((row) => {
         const normalizedRow: Row = {};
-        this.columns.forEach(col => {
-          normalizedRow[col] = (row as Row).hasOwnProperty(col) ? (row as Row)[col] : null;
+        this.columns.forEach((col) => {
+          normalizedRow[col] = (row as Row).hasOwnProperty(col)
+            ? (row as Row)[col]
+            : null;
         });
         return normalizedRow;
       });
@@ -92,9 +97,11 @@ export class DataFrame {
     if (!infer) {
       // Use the first row as the column names
       const colNames = data[0];
-      const rowData = data.slice(1).map((row) =>
-        Object.fromEntries(colNames.map((col, i) => [col, row[i]]))
-      );
+      const rowData = data
+        .slice(1)
+        .map((row) =>
+          Object.fromEntries(colNames.map((col, i) => [col, row[i]]))
+        );
       return new DataFrame(rowData, colNames);
     } else {
       // Use provided columns or infer names as "col1", "col2", etc.
@@ -113,7 +120,10 @@ export class DataFrame {
    * @param columns - Optional array of column names. If not provided, column names will be inferred from the keys of the input object.
    * @returns A new DataFrame instance.
    */
-  static fromJSON(data: Row[] | { [key: string]: any[] }, columns?: string[]): DataFrame {
+  static fromJSON(
+    data: Row[] | { [key: string]: any[] },
+    columns?: string[]
+  ): DataFrame {
     if (Array.isArray(data)) {
       // Array of rows
       return new DataFrame(data);
@@ -127,7 +137,6 @@ export class DataFrame {
       return new DataFrame(rowData, colNames);
     }
   }
-
 
   // Detects and stores data types for each column
   /**
@@ -159,22 +168,27 @@ export class DataFrame {
     const colValues = this.data.map((row) => row[column]);
 
     // Check for NaN values; if any found, set dtype to undefined
-    const hasNaN = colValues.some((value) => typeof value === 'number' && isNaN(value));
+    const hasNaN = colValues.some(
+      (value) => typeof value === "number" && isNaN(value)
+    );
     if (hasNaN) {
       return undefined;
     } else {
       // Determine column type if there are no NaNs
-      const nonNullValues = colValues.filter((value) => value !== null && value !== undefined);
-      const inferredType = nonNullValues.every((value) => typeof value === 'number')
-        ? 'number'
-        : nonNullValues.every((value) => typeof value === 'string')
-          ? 'string'
-          : 'mixed';
+      const nonNullValues = colValues.filter(
+        (value) => value !== null && value !== undefined
+      );
+      const inferredType = nonNullValues.every(
+        (value) => typeof value === "number"
+      )
+        ? "number"
+        : nonNullValues.every((value) => typeof value === "string")
+        ? "string"
+        : "mixed";
 
       return inferredType;
     }
   }
-
 
   // Accessor method to retrieve dtypes
   /**
@@ -185,7 +199,6 @@ export class DataFrame {
   getDtypes(): { [key: string]: string | undefined } {
     return this.dtypes;
   }
-
 
   /**
    * Returns the names of the columns in the DataFrame.
@@ -213,7 +226,6 @@ export class DataFrame {
     return Array.from(new Set(values));
   }
 
-
   // Method to add a new column to the DataFrame
   /**
    * Adds a new column to the DataFrame.
@@ -222,7 +234,7 @@ export class DataFrame {
    * @param values - An array of values or a single value to populate the new column.
    *                 If an array is provided, its length must match the number of rows in the DataFrame.
    *                 If a single value is provided, it will be assigned to all rows.
-   * 
+   *
    * @throws {Error} If the column name already exists in the DataFrame.
    * @throws {Error} If the length of the values array does not match the number of rows in the DataFrame.
    */
@@ -238,30 +250,69 @@ export class DataFrame {
     if (Array.isArray(values)) {
       if (values.length !== this.data.length) {
         this.columns.pop(); // remove new column name
-        throw new Error(`Length of values array (${values.length}) does not match the number of rows (${this.data.length})`);
+        throw new Error(
+          `Length of values array (${values.length}) does not match the number of rows (${this.data.length})`
+        );
       }
       // Add each value in the array to the corresponding row
-      this.data = this.data.map((row, i) => ({ ...row, [columnName]: values[i] }));
+      this.data = this.data.map((row, i) => ({
+        ...row,
+        [columnName]: values[i],
+      }));
     } else {
       // Single default value provided, so add it to all rows
       this.data = this.data.map((row) => ({ ...row, [columnName]: values }));
     }
     // Update the dtype for the new column
-    this.dtypes[columnName] = this.detectDtype(columnName)
+    this.dtypes[columnName] = this.detectDtype(columnName);
   }
 
+  /**
+   * Adds a new row of data to the DataFrame.
+   * Fills missing keys in the row with `null`.
+   * If the row contains new keys, updates the DataFrame to include those keys.
+   * @param newRow - An object representing the new row to add.
+   */
+  addRow(newRow: Row): void {
+    // Check for new columns in the incoming row
+    const newKeys = Object.keys(newRow).filter(
+      (key) => !this.columns.includes(key)
+    );
+    if (newKeys.length > 0) {
+      // Add new keys to the DataFrame's column list
+      this.columns.push(...newKeys);
+
+      // Update existing rows with `null` for the new keys
+      this.data = this.data.map((row) => {
+        newKeys.forEach((key) => {
+          row[key] = null;
+        });
+        return row;
+      });
+    }
+
+    // Normalize the new row to include all columns
+    const normalizedRow: Row = {};
+    this.columns.forEach((col) => {
+      normalizedRow[col] = newRow.hasOwnProperty(col) ? newRow[col] : null;
+    });
+
+    // Add the normalized row to the DataFrame
+    this.data.push(normalizedRow);
+    this.dtypes = this.detectDtypes();    
+  }
 
   // Method to transpose the DataFrame on a given column
   /**
    * Transposes the DataFrame by converting columns into rows based on a key column.
-   * 
+   *
    * @param {string} keyColumn - The name of the column to use as the key for transposing.
    * @param {string | null} [keyLabel=null] - An optional new label for the key column in the transposed DataFrame.
    * @returns {DataFrame} A new DataFrame with the transposed data.
-   * 
+   *
    * @throws {Error} If the key column does not exist in the DataFrame.
    * @throws {Error} If there are duplicate values in the key column.
-   * 
+   *
    * @example
    * // Given a DataFrame with columns 'A', 'B', and 'C', and 'A' as the key column:
    * // A | B | C
@@ -271,12 +322,12 @@ export class DataFrame {
    * // A | 1 | 4
    * // B | 2 | 5
    * // C | 3 | 6
-   * 
+   *
    * const df = new DataFrame([
    *   { A: 1, B: 2, C: 3 },
    *   { A: 4, B: 5, C: 6 }
    * ], ['A', 'B', 'C']);
-   * 
+   *
    * const transposedDf = df.transpose('A');
    * console.log(transposedDf.data);
    * // Output:
@@ -291,20 +342,22 @@ export class DataFrame {
     }
 
     // Check for duplicate values in the key column
-    const keyValues = this.data.map(row => row[keyColumn]);
+    const keyValues = this.data.map((row) => row[keyColumn]);
     const uniqueKeys = new Set(keyValues);
     if (uniqueKeys.size !== keyValues.length) {
-      throw new Error(`Duplicate values found in column "${keyColumn}". Each key must be unique for transposing.`);
+      throw new Error(
+        `Duplicate values found in column "${keyColumn}". Each key must be unique for transposing.`
+      );
     }
 
     // Prepare transposed data
     const transposedData: Row[] = [];
-    const otherColumns = this.columns.filter(col => col !== keyColumn);
+    const otherColumns = this.columns.filter((col) => col !== keyColumn);
 
     // Build rows by mapping each original column (except keyColumn) to the unique key values
-    otherColumns.forEach(col => {
+    otherColumns.forEach((col) => {
       const newRow: Row = { [keyColumn]: col };
-      this.data.forEach(row => {
+      this.data.forEach((row) => {
         const key = row[keyColumn];
         newRow[key] = row[col];
       });
@@ -312,13 +365,15 @@ export class DataFrame {
     });
 
     // Create the new DataFrame with transposed data
-    const newDf = new DataFrame(transposedData, [keyColumn, ...Array.from(uniqueKeys)]);
-    // 
+    const newDf = new DataFrame(transposedData, [
+      keyColumn,
+      ...Array.from(uniqueKeys),
+    ]);
+    //
     if (keyLabel) {
       newDf.renameColumns({ [keyColumn]: keyLabel });
     }
-    return newDf
-
+    return newDf;
   }
 
   /**
@@ -341,7 +396,6 @@ export class DataFrame {
     }
   }
 
-
   /**
    * Converts the DataFrame into a 2D array.
    *
@@ -357,13 +411,16 @@ export class DataFrame {
   }
 
   /**
-    * Fills NA values in the dataframe with a specified value, forward fill, or backfill.
-    * @param value - The value to fill NA cells with (only used if method is 'value').
-    * @param method - The method to use for filling NA cells: 'value', 'ffill', or 'bfill'.
-    */
+   * Fills NA values in the dataframe with a specified value, forward fill, or backfill.
+   * @param value - The value to fill NA cells with (only used if method is 'value').
+   * @param method - The method to use for filling NA cells: 'value', 'ffill', or 'bfill'.
+   */
   // Inside DataFrame.ts
-  fillNA(value: any = null, method: 'value' | 'ffill' | 'bfill' = 'value'): void {
-    if (method === 'value') {
+  fillNA(
+    value: any = null,
+    method: "value" | "ffill" | "bfill" = "value"
+  ): void {
+    if (method === "value") {
       this.data = this.data.map((row) => {
         const newRow = { ...row };
         this.columns.forEach((col) => {
@@ -371,7 +428,7 @@ export class DataFrame {
         });
         return newRow;
       });
-    } else if (method === 'ffill') {
+    } else if (method === "ffill") {
       let lastValid: Record<string, any> = {};
       this.data = this.data.map((row) => {
         const newRow = { ...row };
@@ -384,7 +441,7 @@ export class DataFrame {
         });
         return newRow;
       });
-    } else if (method === 'bfill') {
+    } else if (method === "bfill") {
       let nextValid: Record<string, any> = {};
       for (let i = this.data.length - 1; i >= 0; i--) {
         const row = this.data[i];
@@ -421,20 +478,25 @@ export class DataFrame {
   valueCount(column: string): number {
     return this.data.reduce((acc, row) => {
       const value = row[column];
-      return acc + (value !== null && value !== undefined && !isNaN(value) ? 1 : 0);
+      return (
+        acc + (value !== null && value !== undefined && !isNaN(value) ? 1 : 0)
+      );
     }, 0);
   }
-
 
   // Calculate mean (average) for the column
   /**
    * Calculates the mean (average) of the specified column in the DataFrame.
-   * 
+   *
    * @param column - The name of the column for which to calculate the mean.
    * @returns The mean of the column values. Returns NaN if the column has no numeric values.
    */
   mean(column: string): number {
-    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    const values = this.data
+      .map((row) => row[column])
+      .filter(
+        (value) => typeof value === "number" && !isNaN(value)
+      ) as number[];
     if (values.length === 0) return NaN;
     const sum = values.reduce((acc, value) => acc + value, 0);
     return sum / values.length;
@@ -448,22 +510,29 @@ export class DataFrame {
    * @returns The minimum value in the specified column. If the column contains no numeric values, returns NaN.
    */
   min(column: string): number {
-    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    const values = this.data
+      .map((row) => row[column])
+      .filter(
+        (value) => typeof value === "number" && !isNaN(value)
+      ) as number[];
     return values.length > 0 ? Math.min(...values) : NaN;
   }
 
   // Calculate the maximum value in the column
   /**
    * Returns the maximum value in the specified column.
-   * 
+   *
    * @param column - The name of the column to find the maximum value in.
    * @returns The maximum value in the column, or NaN if the column has no numeric values.
    */
   max(column: string): number {
-    const values = this.data.map(row => row[column]).filter(value => typeof value === 'number' && !isNaN(value)) as number[];
+    const values = this.data
+      .map((row) => row[column])
+      .filter(
+        (value) => typeof value === "number" && !isNaN(value)
+      ) as number[];
     return values.length > 0 ? Math.max(...values) : NaN;
   }
-
 
   /**
    * Selects specific columns from the DataFrame and returns a new DataFrame containing only those columns.
@@ -495,8 +564,6 @@ export class DataFrame {
     return new DataFrame(filteredData, this.columns);
   }
 
-
-
   /**
    * Drops the specified columns from the DataFrame.
    *
@@ -517,13 +584,17 @@ export class DataFrame {
    *
    * @param other - The DataFrame to join with.
    * @param on - The column name or an array of column names to join on.
-   * @param how - The type of join to perform. Can be 'inner', 'left', 'right', or 'outer'. Defaults to 'inner'.
-   * 
+   * @param how - The type of join to perform. Can be 'inner', 'left' Defaults to 'inner'.
+   *
    * @returns A new DataFrame resulting from the join operation.
    */
   //join(other: DataFrame, on: string | string[], how: 'inner' | 'left' | 'right' | 'outer' = 'inner'): DataFrame {
-  join(other: DataFrame, on: string | string[], how: 'inner' | 'left'  = 'inner'): DataFrame {
-      const joinedData: Row[] = [];
+  join(
+    other: DataFrame,
+    on: string | string[],
+    how: "inner" | "left" = "inner"
+  ): DataFrame {
+    const joinedData: Row[] = [];
     const otherData = other.toJSON() as Row[];
 
     const isMatch = (row1: Row, row2: Row) => {
@@ -538,22 +609,22 @@ export class DataFrame {
       const matches = otherData.filter((otherRow) => isMatch(row, otherRow));
       if (matches.length > 0) {
         matches.forEach((match) => {
-            const updatedMatch = { ...match };
-            if (Array.isArray(on)) {
-              on.forEach((key) => delete updatedMatch[key]);
-            } else {
-              delete updatedMatch[on];
+          const updatedMatch = { ...match };
+          if (Array.isArray(on)) {
+            on.forEach((key) => delete updatedMatch[key]);
+          } else {
+            delete updatedMatch[on];
+          }
+          Object.keys(updatedMatch).forEach((key) => {
+            if (row.hasOwnProperty(key)) {
+              updatedMatch[`${key}_r`] = updatedMatch[key];
+              delete updatedMatch[key];
             }
-            Object.keys(updatedMatch).forEach((key) => {
-              if (row.hasOwnProperty(key)) {
-                updatedMatch[`${key}_r`] = updatedMatch[key];
-                delete updatedMatch[key];
-              }
-            });
+          });
           joinedData.push({ ...row, ...updatedMatch });
-        })
-//      } else if (how === 'left' || how === 'outer') {
-      } else if (how === 'left' ) {
+        });
+        //      } else if (how === 'left' || how === 'outer') {
+      } else if (how === "left") {
         joinedData.push(row);
       }
     });
@@ -566,20 +637,20 @@ export class DataFrame {
       });
     }
     */
-   
+
     return new DataFrame(joinedData);
   }
 
   /**
    * Renames the columns of the DataFrame based on the provided rename map.
-   * 
+   *
    * @param renameMap - An object where the keys are the current column names and the values are the new column names.
-   * 
+   *
    * @remarks
    * This method updates both the `columns` array and each row in the `data` to reflect the new column names.
    * If a column name in the `columns` array does not exist in the `renameMap`, it will remain unchanged.
    * Similarly, if a key in a row does not exist in the `renameMap`, it will remain unchanged.
-   * 
+   *
    * @example
    * ```typescript
    * const df = new DataFrame({
@@ -589,9 +660,9 @@ export class DataFrame {
    *     { name: 'Bob', age: 30 }
    *   ]
    * });
-   * 
+   *
    * df.renameColumns({ name: 'fullName', age: 'years' });
-   * 
+   *
    * console.log(df.columns); // ['fullName', 'years']
    * console.log(df.data); // [{ fullName: 'Alice', years: 25 }, { fullName: 'Bob', years: 30 }]
    * ```
@@ -609,9 +680,6 @@ export class DataFrame {
       return newRow;
     });
   }
-
 }
-
-
 
 export default DataFrame;

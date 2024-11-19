@@ -191,6 +191,59 @@ describe('DataFrame', () => {
         */
     });
 
+    describe('DataFrame addRow', () => {
+        test('should add a row with all keys present', () => {
+          const data = [
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Bob', age: 30 }
+          ];
+          const df = new DataFrame(data);
+      
+          df.addRow({ id: 3, name: 'Charlie', age: 35 });
+      
+          expect(df.columnNames()).toStrictEqual(['id', 'name', 'age']);
+          expect(df.toJSON()).toStrictEqual([
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Bob', age: 30 },
+            { id: 3, name: 'Charlie', age: 35 }
+          ]);
+        });
+      
+        test('should add a row with one key missing and fill it with null', () => {
+          const data = [
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Bob', age: 30 }
+          ];
+          const df = new DataFrame(data);
+      
+          df.addRow({ id: 3, name: 'Charlie' }); // Missing 'age' key
+      
+          expect(df.columnNames()).toStrictEqual(['id', 'name', 'age']);
+          expect(df.toJSON()).toStrictEqual([
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Bob', age: 30 },
+            { id: 3, name: 'Charlie', age: null }
+          ]);
+        });
+      
+        test('should add a row with new keys and fill existing rows with null for those keys', () => {
+          const data = [
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Bob', age: 30 }
+          ];
+          const df = new DataFrame(data);
+      
+          df.addRow({ id: 3, name: 'Charlie', height: 180 }); // New key: 'height'
+      
+          expect(df.columnNames()).toStrictEqual(['id', 'name', 'age', 'height']);
+          expect(df.toJSON()).toStrictEqual([
+            { id: 1, name: 'Alice', age: 25, height: null },
+            { id: 2, name: 'Bob', age: 30, height: null },
+            { id: 3, name: 'Charlie', age: null, height: 180 }
+          ]);
+        });
+    });
+    
     // constructor from json arrays
     describe('DataFrame from json array via constructor', () => {
         let df: DataFrame;
