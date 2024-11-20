@@ -12,4 +12,4 @@ Represents a row in a data frame, where each key is a column name and the value 
 
 ## Defined in
 
-[DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/9f232f4cc1f3539c99ad776edaa33ea88bb07965/src/DataFrame.ts#L8)
+[DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/526c63aca827589889e6fa2bde531b4741634bf1/src/DataFrame.ts#L8)

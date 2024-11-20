@@ -291,8 +291,12 @@ describe('DataFrame', () => {
         
         df = new DataFrame(arrayData.slice(1), arrayData[0] as string[]);
 
-        expect(df.toArray()).toStrictEqual(arrayData);
-        expect(df.toJSON()).toStrictEqual(jsonOut);
+        test('Check output to array', () => {
+            expect(df.toArray()).toStrictEqual(arrayData);
+        });
+        test('Check output to json', () => {
+            expect(df.toJSON()).toStrictEqual(jsonOut);
+        });
     })
 
     // constructor from 2d arrays with empty cells
@@ -321,8 +325,12 @@ describe('DataFrame', () => {
         
         df = new DataFrame(arrayIn.slice(1), arrayIn[0] as string[]);
 
-        expect(df.toArray()).toStrictEqual(arrayOut);
-        expect(df.toJSON()).toStrictEqual(jsonOut);
+        test('Check output to array', () => {
+            expect(df.toArray()).toStrictEqual(arrayOut);
+        });
+        test('Check output to json', () => {
+            expect(df.toJSON()).toStrictEqual(jsonOut);
+        });
     })
 
     
