@@ -1,5 +1,5 @@
 // src/DataFrame.test.ts
-import DataFrame from './DataFrame';
+import DataFrame from '../src/DataFrame';
 
 describe('DataFrame', () => {
     let df: DataFrame;
