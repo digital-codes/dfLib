@@ -1,8 +1,8 @@
-[**dflib v0.1.3**](README.md) • **Docs**
+[**dflib v0.1.4**](README.md) • **Docs**
 
 ***
 
-# dflib v0.1.3
+# dflib v0.1.4
 
 ## References
 

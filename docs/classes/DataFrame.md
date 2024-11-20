@@ -1,8 +1,8 @@
-[**dflib v0.1.3**](../README.md) • **Docs**
+[**dflib v0.1.4**](../README.md) • **Docs**
 
 ***
 
-[dflib v0.1.3](../globals.md) / DataFrame
+[dflib v0.1.4](../globals.md) / DataFrame
 
 # Class: DataFrame
 
@@ -70,7 +70,7 @@ If `data` is a 2D array and `columns` are not provided.
 
 #### Defined in
 
-[DataFrame.ts:51](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L51)
+[DataFrame.ts:51](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L51)
 
 ## Methods
 
@@ -106,7 +106,7 @@ If the length of the values array does not match the number of rows in the DataF
 
 #### Defined in
 
-[DataFrame.ts:241](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L241)
+[DataFrame.ts:241](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L241)
 
 ***
 
@@ -130,7 +130,7 @@ An object representing the new row to add.
 
 #### Defined in
 
-[DataFrame.ts:276](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L276)
+[DataFrame.ts:276](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L276)
 
 ***
 
@@ -148,7 +148,7 @@ An array of column names.
 
 #### Defined in
 
-[DataFrame.ts:208](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L208)
+[DataFrame.ts:208](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L208)
 
 ***
 
@@ -166,7 +166,7 @@ The count of rows in the DataFrame.
 
 #### Defined in
 
-[DataFrame.ts:467](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L467)
+[DataFrame.ts:467](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L467)
 
 ***
 
@@ -190,7 +190,7 @@ A new DataFrame instance with the specified columns removed.
 
 #### Defined in
 
-[DataFrame.ts:573](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L573)
+[DataFrame.ts:573](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L573)
 
 ***
 
@@ -216,7 +216,7 @@ The method to use for filling NA cells: 'value', 'ffill', or 'bfill'.
 
 #### Defined in
 
-[DataFrame.ts:419](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L419)
+[DataFrame.ts:419](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L419)
 
 ***
 
@@ -234,7 +234,7 @@ An object where the keys are column names and the values are their respective da
 
 #### Defined in
 
-[DataFrame.ts:199](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L199)
+[DataFrame.ts:199](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L199)
 
 ***
 
@@ -266,7 +266,7 @@ A new DataFrame resulting from the join operation.
 
 #### Defined in
 
-[DataFrame.ts:592](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L592)
+[DataFrame.ts:592](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L592)
 
 ***
 
@@ -290,7 +290,7 @@ The maximum value in the column, or NaN if the column has no numeric values.
 
 #### Defined in
 
-[DataFrame.ts:528](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L528)
+[DataFrame.ts:528](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L528)
 
 ***
 
@@ -314,7 +314,7 @@ The mean of the column values. Returns NaN if the column has no numeric values.
 
 #### Defined in
 
-[DataFrame.ts:494](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L494)
+[DataFrame.ts:494](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L494)
 
 ***
 
@@ -338,7 +338,7 @@ The minimum value in the specified column. If the column contains no numeric val
 
 #### Defined in
 
-[DataFrame.ts:512](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L512)
+[DataFrame.ts:512](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L512)
 
 ***
 
@@ -383,7 +383,7 @@ console.log(df.data); // [{ fullName: 'Alice', years: 25 }, { fullName: 'Bob', y
 
 #### Defined in
 
-[DataFrame.ts:670](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L670)
+[DataFrame.ts:670](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L670)
 
 ***
 
@@ -407,7 +407,7 @@ A new DataFrame containing only the specified columns.
 
 #### Defined in
 
-[DataFrame.ts:543](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L543)
+[DataFrame.ts:543](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L543)
 
 ***
 
@@ -431,7 +431,7 @@ A new DataFrame containing only the rows that match the filter criteria.
 
 #### Defined in
 
-[DataFrame.ts:560](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L560)
+[DataFrame.ts:560](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L560)
 
 ***
 
@@ -455,7 +455,7 @@ A 2D array representation of the DataFrame. If `includeHeader` is `true`, the fi
 
 #### Defined in
 
-[DataFrame.ts:405](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L405)
+[DataFrame.ts:405](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L405)
 
 ***
 
@@ -479,7 +479,7 @@ An array of row objects if `records` is true, otherwise an object with arrays fo
 
 #### Defined in
 
-[DataFrame.ts:385](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L385)
+[DataFrame.ts:385](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L385)
 
 ***
 
@@ -541,7 +541,7 @@ console.log(transposedDf.data);
 
 #### Defined in
 
-[DataFrame.ts:339](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L339)
+[DataFrame.ts:339](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L339)
 
 ***
 
@@ -569,7 +569,7 @@ Will throw an error if the specified column does not exist in the DataFrame.
 
 #### Defined in
 
-[DataFrame.ts:220](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L220)
+[DataFrame.ts:220](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L220)
 
 ***
 
@@ -593,7 +593,7 @@ The count of valid values in the specified column.
 
 #### Defined in
 
-[DataFrame.ts:478](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L478)
+[DataFrame.ts:478](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L478)
 
 ***
 
@@ -623,7 +623,7 @@ A new DataFrame instance.
 
 #### Defined in
 
-[DataFrame.ts:96](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L96)
+[DataFrame.ts:96](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L96)
 
 ***
 
@@ -651,4 +651,4 @@ A new DataFrame instance.
 
 #### Defined in
 
-[DataFrame.ts:123](https://github.com/digital-codes/dfLib/blob/8f78bde449ffbff9ffae40dad6eafabec0e7f13e/src/DataFrame.ts#L123)
+[DataFrame.ts:123](https://github.com/digital-codes/dfLib/blob/ebc91fc915d701f148973b3fed97422c1a369a37/src/DataFrame.ts#L123)
