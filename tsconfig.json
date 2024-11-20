@@ -4,8 +4,8 @@
       "declaration": true,               // Generate .d.ts files
       "declarationMap": true,            // Generate .d.ts.map files (optional, for debugging)
       "emitDeclarationOnly": false,      // Emit both .js and .d.ts files
-      "target": "ES2019",                       // Specify ECMAScript target version
-      "lib": ["es2019","dom"],                // Specify library files to be included in the compilation
+      "target": "ESNext",                       // Specify ECMAScript target version
+      "lib": ["ESNext","dom"],                // Specify library files to be included in the compilation
       //"module": "commonjs",                   // Use commonjs for Node.js compatibility
       "module":"ESNext",
       "strict": true,                         // Enable all strict type-checking options
