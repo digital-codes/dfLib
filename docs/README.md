@@ -1,4 +1,4 @@
-**dflib v0.1.6** • [**Docs**](globals.md)
+**dflib v0.1.7**
 
 ***
 
