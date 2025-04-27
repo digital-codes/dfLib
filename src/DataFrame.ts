@@ -723,8 +723,18 @@ export class DataFrame {
    * Plots the DataFrame.
    * Currently, this method is not implemented.
    */
-  plot(type:string="line"): void {
-    console.log("Plotting not implemented yet for: ", type);
+  async plot(container: string = "plotDiv"): Promise<{ line: () => void; bar: () => void }> {
+    console.log("Plot requested with the following parameters:");
+    console.log("Container:", container);
+
+    return {
+      line: () => {
+        console.log("Dummy line chart");
+      },
+      bar: () => {
+        console.log("Dummy bar chart");
+      },
+    };
   }
 
 
