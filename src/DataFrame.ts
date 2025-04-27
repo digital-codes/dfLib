@@ -720,6 +720,15 @@ export class DataFrame {
   }
 
 
+  /**
+   * Plots the DataFrame.
+   * Currently, this method is not implemented.
+   */
+  plot(): void {
+    console.log("Plotting not implemented yet");
+  }
+
+
 }
 
 
