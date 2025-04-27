@@ -684,9 +684,11 @@ export class DataFrame {
   /**
    * Prints the first 10 rows of the DataFrame in a tabular format.
    */
-  print(maxRows:number = 10): void {
+  print(maxRows: number = 10): void {
     const rowsToPrint = this.data.slice(0, maxRows);
-    const columnWidths = this.columns.map((col) => Math.max(col.length, 15));
+    const columnWidths = ["Index", ...this.columns].map((col) =>
+      Math.max(col.length, 15)
+    );
 
     const pad = (text: string, width: number) =>
       text.length > width ? text.slice(0, width - 1) + "…" : text.padEnd(width);
@@ -696,19 +698,25 @@ export class DataFrame {
       columnWidths.map((width) => char.repeat(width + 2)).join("┼") +
       "╢";
 
-    const header = "╔" + columnWidths.map((width) => "═".repeat(width + 2)).join("╤") + "╗";
-    const footer = "╚" + columnWidths.map((width) => "═".repeat(width + 2)).join("╧") + "╝";
+    const header =
+      "╔" + columnWidths.map((width) => "═".repeat(width + 2)).join("╤") + "╗";
+    const footer =
+      "╚" + columnWidths.map((width) => "═".repeat(width + 2)).join("╧") + "╝";
 
     const headerRow =
       "║ " +
-      this.columns.map((col, i) => pad(col, columnWidths[i])).join(" │ ") +
+      ["Index", ...this.columns]
+        .map((col, i) => pad(col, columnWidths[i]))
+        .join(" │ ") +
       " ║";
 
     const rows = rowsToPrint.map((row, rowIndex) => {
       const rowValues = this.columns.map((col, i) =>
-        pad(String(row[col] ?? ""), columnWidths[i])
+        pad(String(row[col] ?? ""), columnWidths[i + 1])
       );
-      return `║ ${pad(String(rowIndex), 10)} │ ${rowValues.join(" │ ")} ║`;
+      return `║ ${pad(String(rowIndex), columnWidths[0])} │ ${rowValues.join(
+        " │ "
+      )} ║`;
     });
 
     console.log(header);
