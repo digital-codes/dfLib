@@ -8,6 +8,6 @@
 
 > **Row** = `Record`\<`string`, `any`\>
 
-Defined in: [DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/0d31d2ffbd86d55c4439f8827e3a6e2f2f647f3c/src/DataFrame.ts#L8)
+Defined in: [DataFrame.ts:8](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L8)
 
 Represents a row in a data frame, where each key is a column name and the value can be of any type.
