@@ -105,7 +105,8 @@ export class DataFrame {
       return new DataFrame(rowData, colNames);
     } else {
       // Use provided columns or infer names as "col1", "col2", etc.
-      const inferredColumns = data[0].map((_, i) => `col${i + 1}`);
+      const inferredColumns: string[] = [];
+      data[0].forEach((_, i) => inferredColumns.push(`col${i + 1}`))
       const rowData = data.map((row) =>
         Object.fromEntries(inferredColumns.map((col, i) => [col, row[i]]))
       );
