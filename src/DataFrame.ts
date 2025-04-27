@@ -684,8 +684,7 @@ export class DataFrame {
   /**
    * Prints the first 10 rows of the DataFrame in a tabular format.
    */
-  print(): void {
-    const maxRows = 10;
+  print(maxRows:number = 10): void {
     const rowsToPrint = this.data.slice(0, maxRows);
     const columnWidths = this.columns.map((col) => Math.max(col.length, 15));
 
@@ -724,8 +723,8 @@ export class DataFrame {
    * Plots the DataFrame.
    * Currently, this method is not implemented.
    */
-  plot(): void {
-    console.log("Plotting not implemented yet");
+  plot(type:string="line"): void {
+    console.log("Plotting not implemented yet for: ", type);
   }
 
 
