@@ -183,8 +183,8 @@ export class DataFrame {
       )
         ? "number"
         : nonNullValues.every((value) => typeof value === "string")
-        ? "string"
-        : "mixed";
+          ? "string"
+          : "mixed";
 
       return inferredType;
     }
@@ -299,7 +299,7 @@ export class DataFrame {
 
     // Add the normalized row to the DataFrame
     this.data.push(normalizedRow);
-    this.dtypes = this.detectDtypes();    
+    this.dtypes = this.detectDtypes();
   }
 
   // Method to transpose the DataFrame on a given column
@@ -680,6 +680,48 @@ export class DataFrame {
       return newRow;
     });
   }
+
+  /**
+   * Prints the first 10 rows of the DataFrame in a tabular format.
+   */
+  print(): void {
+    const maxRows = 10;
+    const rowsToPrint = this.data.slice(0, maxRows);
+    const columnWidths = this.columns.map((col) => Math.max(col.length, 15));
+
+    const pad = (text: string, width: number) =>
+      text.length > width ? text.slice(0, width - 1) + "…" : text.padEnd(width);
+
+    const separator = (char: string) =>
+      "╟" +
+      columnWidths.map((width) => char.repeat(width + 2)).join("┼") +
+      "╢";
+
+    const header = "╔" + columnWidths.map((width) => "═".repeat(width + 2)).join("╤") + "╗";
+    const footer = "╚" + columnWidths.map((width) => "═".repeat(width + 2)).join("╧") + "╝";
+
+    const headerRow =
+      "║ " +
+      this.columns.map((col, i) => pad(col, columnWidths[i])).join(" │ ") +
+      " ║";
+
+    const rows = rowsToPrint.map((row, rowIndex) => {
+      const rowValues = this.columns.map((col, i) =>
+        pad(String(row[col] ?? ""), columnWidths[i])
+      );
+      return `║ ${pad(String(rowIndex), 10)} │ ${rowValues.join(" │ ")} ║`;
+    });
+
+    console.log(header);
+    console.log(headerRow);
+    console.log(separator("─"));
+    rows.forEach((row) => console.log(row));
+    console.log(footer);
+  }
+
+
 }
+
+
 
 export default DataFrame;

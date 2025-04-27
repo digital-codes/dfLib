@@ -27,6 +27,17 @@ describe('DataFrame', () => {
         expect(dfArray.toJSON()).toStrictEqual(jsonData);
     });
 
+    test('should initialize and print', () => {
+        const arrayData = [
+            [1, 'Alice', 25],
+            [2, 'Bob', null],
+            [3, 'Charlie', 30]
+        ];
+        const dfArray = new DataFrame(arrayData, ['id', 'name', 'age']);
+        dfArray.print();
+        expect(true).toBe(true); // Just to ensure the test runs
+    });
+
     test('should throw error if initialized with array data without columns', () => {
         const arrayData = [
             [1, 'Alice', 25],
