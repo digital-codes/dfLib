@@ -684,9 +684,10 @@ export class DataFrame {
   /**
    * Prints the first 10 rows of the DataFrame in a tabular format.
    */
-  print(maxRows: number = 10): void {
+  print(maxRows: number = 10, index: boolean = false): void {
     const rowsToPrint = this.data.slice(0, maxRows);
-    const columnWidths = ["Index", ...this.columns].map((col) =>
+    const columnsToPrint = index ? ["Index", ...this.columns] : this.columns;
+    const columnWidths = columnsToPrint.map((col) =>
       Math.max(col.length, 15)
     );
 
@@ -705,18 +706,19 @@ export class DataFrame {
 
     const headerRow =
       "║ " +
-      ["Index", ...this.columns]
+      columnsToPrint
         .map((col, i) => pad(col, columnWidths[i]))
         .join(" │ ") +
       " ║";
 
     const rows = rowsToPrint.map((row, rowIndex) => {
       const rowValues = this.columns.map((col, i) =>
-        pad(String(row[col] ?? ""), columnWidths[i + 1])
+        pad(String(row[col] ?? ""), columnWidths[index ? i + 1 : i])
       );
-      return `║ ${pad(String(rowIndex), columnWidths[0])} │ ${rowValues.join(
-        " │ "
-      )} ║`;
+      const rowContent = index
+        ? `${pad(String(rowIndex), columnWidths[0])} │ ${rowValues.join(" │ ")}`
+        : rowValues.join(" │ ");
+      return `║ ${rowContent} ║`;
     });
 
     console.log(header);
