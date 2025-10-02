@@ -6,7 +6,7 @@
 
 # Class: DataFrame
 
-Defined in: [DataFrame.ts:38](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L38)
+Defined in: [DataFrame.ts:38](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L38)
 
 Represents a DataFrame, a 2-dimensional labeled data structure with columns of potentially different types.
 
@@ -50,7 +50,7 @@ If `data` is a 2D array and `columns` are not provided.
 
 > **new DataFrame**(`data`, `columns?`): `DataFrame`
 
-Defined in: [DataFrame.ts:51](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L51)
+Defined in: [DataFrame.ts:51](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L51)
 
 Constructs a new DataFrame instance.
 
@@ -82,7 +82,7 @@ If `data` is a 2D array and `columns` are not provided.
 
 > **addColumn**(`columnName`, `values`): `void`
 
-Defined in: [DataFrame.ts:241](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L241)
+Defined in: [DataFrame.ts:242](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L242)
 
 Adds a new column to the DataFrame.
 
@@ -120,7 +120,7 @@ If the length of the values array does not match the number of rows in the DataF
 
 > **addRow**(`newRow`): `void`
 
-Defined in: [DataFrame.ts:276](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L276)
+Defined in: [DataFrame.ts:277](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L277)
 
 Adds a new row of data to the DataFrame.
 Fills missing keys in the row with `null`.
@@ -144,7 +144,7 @@ An object representing the new row to add.
 
 > **columnNames**(): `string`[]
 
-Defined in: [DataFrame.ts:208](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L208)
+Defined in: [DataFrame.ts:209](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L209)
 
 Returns the names of the columns in the DataFrame.
 
@@ -160,7 +160,7 @@ An array of column names.
 
 > **count**(): `number`
 
-Defined in: [DataFrame.ts:467](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L467)
+Defined in: [DataFrame.ts:468](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L468)
 
 Returns the number of rows in the DataFrame.
 
@@ -176,7 +176,7 @@ The count of rows in the DataFrame.
 
 > **dropCols**(`columns`): `DataFrame`
 
-Defined in: [DataFrame.ts:573](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L573)
+Defined in: [DataFrame.ts:574](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L574)
 
 Drops the specified columns from the DataFrame.
 
@@ -200,7 +200,7 @@ A new DataFrame instance with the specified columns removed.
 
 > **fillNA**(`value`, `method`): `void`
 
-Defined in: [DataFrame.ts:419](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L419)
+Defined in: [DataFrame.ts:420](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L420)
 
 Fills NA values in the dataframe with a specified value, forward fill, or backfill.
 
@@ -228,7 +228,7 @@ The method to use for filling NA cells: 'value', 'ffill', or 'bfill'.
 
 > **getDtypes**(): `object`
 
-Defined in: [DataFrame.ts:199](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L199)
+Defined in: [DataFrame.ts:200](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L200)
 
 Retrieves the data types of the DataFrame columns.
 
@@ -244,7 +244,7 @@ An object where the keys are column names and the values are their respective da
 
 > **join**(`other`, `on`, `how`): `DataFrame`
 
-Defined in: [DataFrame.ts:592](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L592)
+Defined in: [DataFrame.ts:593](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L593)
 
 Joins the current DataFrame with another DataFrame based on the specified columns and join type.
 
@@ -280,7 +280,7 @@ A new DataFrame resulting from the join operation.
 
 > **max**(`column`): `number`
 
-Defined in: [DataFrame.ts:528](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L528)
+Defined in: [DataFrame.ts:529](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L529)
 
 Returns the maximum value in the specified column.
 
@@ -304,7 +304,7 @@ The maximum value in the column, or NaN if the column has no numeric values.
 
 > **mean**(`column`): `number`
 
-Defined in: [DataFrame.ts:494](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L494)
+Defined in: [DataFrame.ts:495](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L495)
 
 Calculates the mean (average) of the specified column in the DataFrame.
 
@@ -328,7 +328,7 @@ The mean of the column values. Returns NaN if the column has no numeric values.
 
 > **min**(`column`): `number`
 
-Defined in: [DataFrame.ts:512](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L512)
+Defined in: [DataFrame.ts:513](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L513)
 
 Calculates the minimum value in a specified column of the DataFrame.
 
@@ -348,11 +348,56 @@ The minimum value in the specified column. If the column contains no numeric val
 
 ***
 
+### plot()
+
+> **plot**(`container`): `Promise`\<\{ `bar`: () => `void`; `line`: () => `void`; \}\>
+
+Defined in: [DataFrame.ts:737](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L737)
+
+Plots the DataFrame.
+Currently, this method is not implemented.
+
+#### Parameters
+
+##### container
+
+`string` = `"plotDiv"`
+
+#### Returns
+
+`Promise`\<\{ `bar`: () => `void`; `line`: () => `void`; \}\>
+
+***
+
+### print()
+
+> **print**(`maxRows`, `index`): `void`
+
+Defined in: [DataFrame.ts:688](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L688)
+
+Prints the first 10 rows of the DataFrame in a tabular format.
+
+#### Parameters
+
+##### maxRows
+
+`number` = `10`
+
+##### index
+
+`boolean` = `false`
+
+#### Returns
+
+`void`
+
+***
+
 ### renameColumns()
 
 > **renameColumns**(`renameMap`): `void`
 
-Defined in: [DataFrame.ts:670](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L670)
+Defined in: [DataFrame.ts:671](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L671)
 
 Renames the columns of the DataFrame based on the provided rename map.
 
@@ -395,7 +440,7 @@ console.log(df.data); // [{ fullName: 'Alice', years: 25 }, { fullName: 'Bob', y
 
 > **selectCols**(`columns`): `DataFrame`
 
-Defined in: [DataFrame.ts:543](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L543)
+Defined in: [DataFrame.ts:544](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L544)
 
 Selects specific columns from the DataFrame and returns a new DataFrame containing only those columns.
 
@@ -419,7 +464,7 @@ A new DataFrame containing only the specified columns.
 
 > **selectRows**(`filter`): `DataFrame`
 
-Defined in: [DataFrame.ts:560](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L560)
+Defined in: [DataFrame.ts:561](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L561)
 
 Selects rows from the DataFrame that match the specified filter criteria.
 
@@ -441,7 +486,7 @@ A new DataFrame containing only the rows that match the filter criteria.
 
 > **toArray**(`includeHeader`): `any`[][]
 
-Defined in: [DataFrame.ts:405](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L405)
+Defined in: [DataFrame.ts:406](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L406)
 
 Converts the DataFrame into a 2D array.
 
@@ -463,9 +508,9 @@ A 2D array representation of the DataFrame. If `includeHeader` is `true`, the fi
 
 ### toJSON()
 
-> **toJSON**(`records`): [`Row`](../type-aliases/Row.md)[] \| \{[`key`: `string`]: `any`[]; \}
+> **toJSON**(`records`): [`Row`](../type-aliases/Row.md)[] \| \{\[`key`: `string`\]: `any`[]; \}
 
-Defined in: [DataFrame.ts:385](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L385)
+Defined in: [DataFrame.ts:386](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L386)
 
 Converts the DataFrame to a JSON representation.
 
@@ -479,7 +524,7 @@ If true, returns an array of row objects (default). If false, returns an object 
 
 #### Returns
 
-[`Row`](../type-aliases/Row.md)[] \| \{[`key`: `string`]: `any`[]; \}
+[`Row`](../type-aliases/Row.md)[] \| \{\[`key`: `string`\]: `any`[]; \}
 
 An array of row objects if `records` is true, otherwise an object with arrays for each column.
 
@@ -489,7 +534,7 @@ An array of row objects if `records` is true, otherwise an object with arrays fo
 
 > **transpose**(`keyColumn`, `keyLabel?`): `DataFrame`
 
-Defined in: [DataFrame.ts:339](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L339)
+Defined in: [DataFrame.ts:340](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L340)
 
 Transposes the DataFrame by converting columns into rows based on a key column.
 
@@ -553,7 +598,7 @@ console.log(transposedDf.data);
 
 > **unique**(`column`): `any`[]
 
-Defined in: [DataFrame.ts:220](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L220)
+Defined in: [DataFrame.ts:221](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L221)
 
 Returns an array of unique values from the specified column in the DataFrame.
 
@@ -581,7 +626,7 @@ Will throw an error if the specified column does not exist in the DataFrame.
 
 > **valueCount**(`column`): `number`
 
-Defined in: [DataFrame.ts:478](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L478)
+Defined in: [DataFrame.ts:479](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L479)
 
 Counts the number of non-null, non-undefined, and numeric values in a specified column.
 
@@ -605,7 +650,7 @@ The count of valid values in the specified column.
 
 > `static` **fromArray**(`data`, `infer`): `DataFrame`
 
-Defined in: [DataFrame.ts:96](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L96)
+Defined in: [DataFrame.ts:96](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L96)
 
 Creates a DataFrame from a 2D array.
 
@@ -637,7 +682,7 @@ A new DataFrame instance.
 
 > `static` **fromJSON**(`data`, `columns?`): `DataFrame`
 
-Defined in: [DataFrame.ts:123](https://github.com/digital-codes/dfLib/blob/bc4ea99fd5b0d211cde4f82aa178fda93eff31fb/src/DataFrame.ts#L123)
+Defined in: [DataFrame.ts:124](https://github.com/digital-codes/dfLib/blob/d7fa889a2995feebbd2a922f9c166df0e01886b9/src/DataFrame.ts#L124)
 
 Creates a DataFrame instance from a JSON object or an array of rows.
 
@@ -647,7 +692,7 @@ Creates a DataFrame instance from a JSON object or an array of rows.
 
 The input data which can be either an array of rows or an object where each key is a column name and each value is an array of column data.
 
-[`Row`](../type-aliases/Row.md)[] | \{[`key`: `string`]: `any`[]; \}
+[`Row`](../type-aliases/Row.md)[] | \{\[`key`: `string`\]: `any`[]; \}
 
 ##### columns?
 
